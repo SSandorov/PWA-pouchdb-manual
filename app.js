@@ -36,14 +36,22 @@ db.put(mensaje)
 
 // 3- Leer todos los mensajes offline
 // que aparezcan en la consola
-db.allDocs({include_docs: true, descending: false})
-    .then(doc => {
-        console.log(doc.rows);
-    });
+// db.allDocs({include_docs: true, descending: false})
+//     .then(doc => {
+//         console.log(doc.rows);
+//     });
 
 // 4- Cambiar el valor 'sincronizado' de todos los objetos
 //  en la BD a TRUE
+db.allDocs({include_docs: true, descending: false})
+    .then(doc => {
+        doc.rows.forEach(row => {
+            let doc = row.doc;
+            doc.sincronizado = true;
 
+            db.put(doc);
+        });
+    });
 
 
 // 5- Borrar todos los registros, uno por uno, evaluando
