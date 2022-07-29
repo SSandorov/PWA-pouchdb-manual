@@ -43,22 +43,30 @@ db.put(mensaje)
 
 // 4- Cambiar el valor 'sincronizado' de todos los objetos
 //  en la BD a TRUE
-db.allDocs({include_docs: true, descending: false})
-    .then(doc => {
-        doc.rows.forEach(row => {
-            let doc = row.doc;
-            doc.sincronizado = true;
+// db.allDocs({include_docs: true, descending: false})
+//     .then(doc => {
+//         doc.rows.forEach(row => {
+//             let doc = row.doc;
+//             doc.sincronizado = true;
 
-            db.put(doc);
-        });
-    });
+//             db.put(doc);
+//         });
+//     });
 
 
 // 5- Borrar todos los registros, uno por uno, evaluando
 // cuales estan sincronizados
 // deberá de comentar todo el código que actualiza
 // el campo de la sincronización 
-
+db.allDocs({include_docs: true})
+    .then(docs => {
+        docs.row.forEach(row => {
+            let doc = row.doc;
+            if (doc.sincronizado) {
+                db.remove(doc);
+            };
+        });
+    });
 
 
 
